@@ -43,32 +43,30 @@ function questions() {
             }
         }
     ]).then(function (answer) {
-        connection.query("SELECT * FROM products WHERE ?", [{ item_id : answer.item_id }], function (err, res) {
+        connection.query("SELECT * FROM products WHERE ?", [{ item_id: answer.item_id }], function (err, res) {
             if (err) throw err
             var inputID = answer.item_id;
             var quantity = answer.quantity;
             var actualQuantity = res[0].stock_quantity;
             var remainingQuantity = actualQuantity - quantity
-            if(actualQuantity>answer.quantity){
-                connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?",[remainingQuantity, inputID], function(err, res){
-                    if(err) throw err
-                
+            if (actualQuantity > answer.quantity) {
+                connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?", [remainingQuantity, inputID], function (err, res) {
+                    if (err) throw err
                 })
-            customerTableUpdated();
-            console.log("--------------------------------------");
-            console.log(
-                "Your order:", res[0].product_name, "\n",
-                "Order Quantity:", quantity,"\n",
-                "Total cost:", (quantity* res[0].price), "\n"
-            );
-            console.log("--------------------------------------");
+                customerTableUpdated();
+                console.log("-----------------------------------------------------");
+                console.log(
+                    "Your order is:", res[0].product_name, "\n",
+                    "Order Quantity:", quantity, "\n",
+                    "Total cost:", (quantity * res[0].price)
+                );
+                console.log("-----------------------------------------------------");
             }
-            else{
-                console.log("--------------------------------------");
+            else {
+                console.log("------------------------------------------------------");
                 console.log("Is not enough items, please consider you order");
-                console.log("--------------------------------------");
+                console.log("------------------------------------------------------");
             }
-
             connection.end();
         })
     })
