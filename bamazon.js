@@ -15,14 +15,9 @@ connection.connect(function (err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
     customerTable();
-
-
 });
 
-
 function questions() {
-
-
     inquirer.prompt([
         {
             name: "item_id",
@@ -48,7 +43,6 @@ function questions() {
             }
         }
     ]).then(function (answer) {
-   
         connection.query("SELECT * FROM products WHERE ?", [{ item_id : answer.item_id }], function (err, res) {
             if (err) throw err
             var inputID = answer.item_id;
@@ -58,12 +52,8 @@ function questions() {
             if(actualQuantity>answer.quantity){
                 connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?",[remainingQuantity, inputID], function(err, res){
                     if(err) throw err
+                
                 })
-            }
-            else{
-                console.log("Is not enough items, please consider you order");
-                questions() 
-            }
             customerTableUpdated();
             console.log("--------------------------------------");
             console.log(
@@ -72,6 +62,13 @@ function questions() {
                 "Total cost:", (quantity* res[0].price), "\n"
             );
             console.log("--------------------------------------");
+            }
+            else{
+                console.log("--------------------------------------");
+                console.log("Is not enough items, please consider you order");
+                console.log("--------------------------------------");
+            }
+
             connection.end();
         })
     })
@@ -90,7 +87,6 @@ function customerTable() {
 function customerTableUpdated() {
     var query = "SELECT * FROM products";
     connection.query(query, function (err, res) {
-        if (err) throw err
         console.table(res);
     })
 }
