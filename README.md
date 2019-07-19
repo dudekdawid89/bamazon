@@ -19,4 +19,4 @@
 4. Right under product table you need to answer for two following questions:
 
     * "Please enter ID product of the product you would like to buy" (choose any item_id you want to buy),
-    * "How many units of product you would like to buy?"
+    * "How many units of product you would like to buy?" (type any integer number to get your order if your order quantity is bigger than stock quantity program gives to chance to consider you order)

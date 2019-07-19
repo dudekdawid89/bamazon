@@ -53,14 +53,7 @@ function questions() {
                 connection.query("UPDATE products SET stock_quantity=? WHERE item_id=?", [remainingQuantity, inputID], function (err, res) {
                     if (err) throw err
                 })
-                customerTableUpdated();
-                console.log("-----------------------------------------------------");
-                console.log(
-                    "Your order is:", res[0].product_name, "\n",
-                    "Order Quantity:", quantity, "\n",
-                    "Total cost:", (quantity * res[0].price)
-                );
-                console.log("-----------------------------------------------------");
+                customerTableUpdated(res[0].product_name,res[0].price,quantity);
             }
             else {
                 console.log("------------------------------------------------------");
@@ -82,9 +75,18 @@ function customerTable() {
     })
 }
 
-function customerTableUpdated() {
+function customerTableUpdated(productname,price,quantity) {
     var query = "SELECT * FROM products";
     connection.query(query, function (err, res) {
+        console.log("----------------------------------------------------------");
         console.table(res);
+
+        console.log("----------------------------------------------------------");
+        console.log(
+            "Your order is:", productname, "\n",
+            "Order Quantity:", quantity, "\n",
+            "Total cost:", (quantity * price)
+        );
+        console.log("----------------------------------------------------------");
     })
 }
